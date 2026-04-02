@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8">
+
+  <title>Заметки</title>
+
+  <link rel="stylesheet" href="/output.css">
+  <link rel="manifest" href="/manifest.json">
+
+  <link rel="apple-touch-icon" href="/icons/icon.svg">
+  <link rel="icon" href="/icons/icon.svg">
+
+  <meta name="mobile-web-app-capable" content="yes">
+
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+</head>
+
+<body
+  class="antialiased transition ease-in-out min-h-screen bg-neutral-50 dark:bg-neutral-900 text-neutral-900 dark:text-neutral-50 font-mono">
+  <h1 class="text-4xl hover:text-melody-blue dark:hover:text-melody-purple">
+    Заметки
+  </h1>
+  <div class="flex flex-row flex-wrap gap-5">
+    <aside>
+      <form id="note-form">
+        <input type="text" id="note-input" placeholder="Введите заметку..." required>
+        <button type="submit">Добавить</button>
+      </form>
+    </aside>
+    <main>
+      <ul id="note-list"></ul>
+    </main>
+  </div>
+  <script src="/app.js"></script>
+</body>
+
+</html>

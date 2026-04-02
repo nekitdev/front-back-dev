@@ -1,0 +1,8 @@
+@import "tailwindcss";
+
+@source "index.html";
+
+@theme {
+  --color-melody-blue: #55ccff;
+  --color-melody-purple: #cc55ff;
+}

@@ -1,0 +1,17 @@
+{
+    "name": "Мои заметки",
+    "short_name": "Заметки",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#000000",
+    "theme_color": "#cc55ff",
+    "description": "Простое приложение для заметок, работающее без сети",
+    "orientation": "portrait-primary",
+    "icons": [
+        {
+            "src": "/icons/icon.svg",
+            "type": "image/svg+xml",
+            "purposes": "any"
+        }
+    ]
+}

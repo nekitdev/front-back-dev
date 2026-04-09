@@ -15,7 +15,8 @@ const FETCH = "fetch";
 
 self.addEventListener(INSTALL, (event) => {
   event.waitUntil(
-    caches.open(CACHE)
+    caches
+      .open(CACHE)
       .then((cache) => cache.addAll(ASSETS))
       .then(() => self.skipWaiting()),
   );
@@ -23,18 +24,20 @@ self.addEventListener(INSTALL, (event) => {
 
 self.addEventListener(ACTIVATE, (event) => {
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(
-        keys.filter((key) => key != CACHE).map((key) => caches.delete(key)),
-      )
-    ),
+    caches
+      .keys()
+      .then((keys) =>
+        Promise.all(
+          keys.filter((key) => key != CACHE).map((key) => caches.delete(key)),
+        ),
+      ),
   );
 });
 
 self.addEventListener(FETCH, (event) => {
   event.respondWith(
-    caches.match(event.request).then((response) =>
-      response || fetch(event.request)
-    ),
+    caches
+      .match(event.request)
+      .then((response) => response || fetch(event.request)),
   );
 });

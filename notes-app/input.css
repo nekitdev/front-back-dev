@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+@source "content/*.html";
+@source "index.html";
+@source "app.js";
+
+@theme {
+    --color-melody-blue: #55ccff;
+    --color-melody-purple: #cc55ff;
+}
+
+.active-button {
+    @apply bg-linear-to-r from-melody-purple to-melody-blue;
+}

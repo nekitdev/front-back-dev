@@ -1,3 +1,7 @@
 # classic
 
 node_modules/
+
+# remove if lock file should be included
+
+deno.lock

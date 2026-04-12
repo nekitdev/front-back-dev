@@ -123,9 +123,17 @@ const initNotes = () => {
   const FORM_ID = "note-form";
   const INPUT_ID = "note-input";
 
+  const REMINDER_FORM_ID = "reminder-form";
+  const REMINDER_TEXT_ID = "reminder-text";
+  const REMINDER_TIME_ID = "reminder-time";
+
   const list = document.getElementById(LIST_ID);
   const form = document.getElementById(FORM_ID);
   const input = document.getElementById(INPUT_ID);
+
+  const reminderForm = document.getElementById(REMINDER_FORM_ID);
+  const reminderText = document.getElementById(REMINDER_TEXT_ID);
+  const reminderTime = document.getElementById(REMINDER_TIME_ID);
 
   const getNotes = () => {
     const option = localStorage.getItem(NOTES);
@@ -136,7 +144,19 @@ const initNotes = () => {
   const setNotes = (notes) =>
     localStorage.setItem(NOTES, JSON.stringify(notes));
 
-  const wrapNote = (note) => `<li class="p-2 mb-2">${note.text}</li>`;
+  const wrapNote = (note) => {
+    const reminder = note.reminderTime;
+
+    const date = reminder ? new Date(reminder).toLocaleString() : null;
+    const info = date ? `<br><small>Напоминание: ${date}</small>` : "";
+
+    return `
+      <li class="p-2 mb-2">
+        ${note.text}
+        ${info}
+      </li>
+    `;
+  };
 
   const loadNotes = () => {
     const notes = getNotes();
@@ -144,12 +164,12 @@ const initNotes = () => {
     list.innerHTML = notes.map(wrapNote).join(EMPTY);
   };
 
-  const addNote = (text) => {
+  const addNote = (text, reminderTime = null) => {
     const notes = getNotes();
 
     const timestamp = Date.now();
 
-    const note = { text, timestamp };
+    const note = { text, timestamp, reminderTime };
 
     notes.push(note);
 
@@ -157,7 +177,11 @@ const initNotes = () => {
 
     loadNotes();
 
-    socket.emit("newTask", { text, timestamp });
+    if (reminderTime) {
+      socket.emit("newReminder", { text, timestamp, reminderTime });
+    } else {
+      socket.emit("newTask", { text, timestamp });
+    }
   };
 
   const SUBMIT = "submit";
@@ -171,6 +195,26 @@ const initNotes = () => {
       addNote(note);
 
       input.value = EMPTY;
+    }
+  });
+
+  reminderForm.addEventListener(SUBMIT, (event) => {
+    event.preventDefault();
+
+    const text = reminderText.value.trim();
+    const dateTime = reminderTime.value;
+
+    if (text && dateTime) {
+      const time = new Date(dateTime).getTime();
+
+      if (time > Date.now()) {
+        addNote(text, time);
+
+        reminderText.value = EMPTY;
+        reminderTime.value = EMPTY;
+      } else {
+        alert("Время напоминания должно быть в будущем.");
+      }
     }
   });
 

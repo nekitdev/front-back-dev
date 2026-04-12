@@ -20,6 +20,8 @@ app.use(express.json());
 
 app.use(express.static(path.join(__dirname, "./")));
 
+const reminders = new Map();
+
 let subscriptions = [];
 
 const server = http.createServer(app);
@@ -38,7 +40,7 @@ io.on("connection", (socket) => {
     io.emit("taskAdded", task);
 
     const payload = JSON.stringify({
-      title: "New task",
+      title: "Новая заметка",
       body: task.text,
     });
 
@@ -47,6 +49,32 @@ io.on("connection", (socket) => {
         console.error(`push error: ${error}`);
       });
     });
+  });
+
+  socket.on("newReminder", (reminder) => {
+    const { id, text, reminderTime } = reminder;
+
+    const delay = reminderTime - Date.now();
+
+    if (delay <= 0) {
+      return;
+    }
+
+    const timeoutId = setTimeout(() => {
+      const payload = JSON.stringify({
+        title: "Напоминание",
+        body: text,
+        reminderId: id,
+      });
+
+      subscriptions.forEach((subscription) => {
+        webPush.sendNotification(subscription, payload).catch((error) => {
+          console.error(`push error: ${error}`);
+        });
+      });
+    }, delay);
+
+    reminders.set(id, { timeoutId, text, reminderTime });
   });
 
   socket.on("disconnect", () => {
@@ -67,6 +95,46 @@ app.post("/unsubscribe", (request, response) => {
   );
 
   response.status(200).json({ message: "subscription removed" });
+});
+
+app.post("/snooze", (request, response) => {
+  const reminderId = parseInt(request.query.reminderId, 10);
+
+  if (!(reminderId && reminders.has(reminderId))) {
+    response.status(404).json({ error: "reminder not found" });
+
+    return;
+  }
+
+  const reminder = reminders.get(reminderId);
+
+  clearTimeout(reminder.timeoutId);
+
+  const delay = 5 * 60 * 1000;
+
+  const timeoutId = setTimeout(() => {
+    const payload = JSON.stringify({
+      title: "Напоминание отложено",
+      body: reminder.text,
+      reminderId,
+    });
+
+    subscriptions.forEach((subscription) => {
+      webPush.sendNotification(subscription, payload).catch((error) => {
+        console.error(`push error: ${error}`);
+      });
+    });
+  }, delay);
+
+  const reminderTime = Date.now() + delay;
+
+  reminders.set(reminderId, {
+    ...reminder,
+    timeoutId,
+    reminderTime,
+  });
+
+  response.status(200).json({ message: "reminder snoozed for 5 minutes" });
 });
 
 const PORT = 3001;

@@ -9,6 +9,16 @@
         />
         <button type="submit">Добавить</button>
     </form>
+    <form id="reminder-form">
+        <input
+            type="text"
+            id="reminder-text"
+            placeholder="Текст напоминания..."
+            required
+        />
+        <input type="datetime-local" id="reminder-time" required />
+        <button type="submit">Добавить с напоминанием</button>
+    </form>
     <h3>Список заметок</h3>
     <ul id="note-list" class="list-none"></ul>
 </div>

@@ -1,0 +1,17 @@
+{
+  "name": "practice-19",
+  "version": "0.1.0",
+  "description": "CRUD with PostgreSQL.",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {},
+  "keywords": [],
+  "author": "nekitdev <nekit@nekit.dev>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^5.2.1",
+    "mongoose": "^9.5.0",
+    "pg": "^8.20.0",
+    "sequelize": "^6.37.8"
+  }
+}

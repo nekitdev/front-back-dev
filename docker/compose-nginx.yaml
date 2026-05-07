@@ -1,0 +1,53 @@
+services:
+  backend_1:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: backend_1
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+    environment:
+      - MESSAGE=server-1
+
+  backend_2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: backend_2
+    ports:
+      - "3001:3000"
+    networks:
+      - app-network
+    environment:
+      - MESSAGE=server-2
+
+  backend_3:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: backend_3
+    ports:
+      - "3002:3000"
+    networks:
+      - app-network
+    environment:
+      - MESSAGE=server-3
+
+  nginx:
+    image: nginx:stable
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - backend_1
+      - backend_2
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

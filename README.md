@@ -1,71 +1,97 @@
-# Приложение для управления задачами (PWA)
+# Технологии backend разработки
 
 ## Описание проекта
 
-Веб-приложение для управления списком задач с поддержкой:
-
-- Работы без сети (service workers)
-- Push-уведомлений
-- Напоминаний с возможностью их отложить
-- Установки на устройство (PWA)
+В рамках контрольной работы №4 были выполнены практические задания №19-23,
+охватывающие различные аспекты backend разработки, в том числе базы данных
+(PostgreSQL, MongoDB, Redis), балансировку нагрузки (Nginx, HAProxy)
+и контейнеризацию с Docker.
 
 ## Функциональные требования
 
-### Практическое занятие 13 - Service Workers
+### Практическое занятие 19 - PostgreSQL и Sequelize
 
-- [x] Регистрация Service Workers
-- [x] Кэширование статических ресурсов
-- [x] Работа без сети
-- [x] Сохранение задач в Local Storage
+- [x] Подключение к базе данных PostgreSQL
+- [x] Настройка Sequelize ORM
+- [x] CRUD-операции: создание, чтение, обновление и удаление записей
+- [x] API на Express для взаимодействия c данными
 
-### Практическое занятие 14 - Web App Manifest
+Установка зависимостей и запуск:
 
-- [x] Файл `manifest.json` с необходимыми полями
-- [x] Иконка в формате SVG
-- [x] Мета-теги для iOS и Android
-- [x] Установка приложения
+```console
+$ cd crud
+$ npm install
+$ node postgres.js
+```
 
-### Практическое занятие 15 - HTTPS + App Shell
+### Практическое занятие 20 - MongoDB и Mongoose
 
-- [x] HTTPS на `localhost` через `mkcert`
-- [x] App Shell архитектура
-- [x] Кэширование статических файлов (Cache First)
-- [x] Динамический контент (Network First)
+- [x] Подключение к базе данных MongoDB
+- [x] Настройка Mongoose ODM
+- [x] CRUD (create, read, update, delete) над коллекциями
+- [x] API на Express для взаимодействия с данными
 
-### Практическое занятие 16 - WebSocket + Push
+Установка зависимостей и запуск:
 
-- [x] Сервер на `express.js` с `socket.io`
-- [x] Отправка и получение событий в реальном времени
-- [x] Push-уведомления с VAPID
-- [x] Подписка на уведомления и отписка от них
+```console
+$ cd crud
+$ npm install
+$ node mongo.js
+```
 
-### Практическое задание 17 - Детализация Push
+### Практическое занятие 21 - Аутентификация и кэширование с Redis
 
-- [x] Форма добавления напоминаний с датой и временем
-- [x] Планирование push-уведомлений на сервере
-- [x] Кнопка "отложить на 5 минут"
-- [x] Уведомление об откладывании
+- [x] Подключение к базе данных Redis
+- [x] Хэширование паролей с помощью Argon2
+- [x] Аутентификация с JWT (+ refresh токены) и ролевая модель доступа
+- [x] Cache-first для `GET`, инвалидация при `POST`, `PUT` и `DELETE`
+
+Установка зависимостей и запуск:
+
+```console
+$ cd redis
+$ npm install
+$ node server.js
+```
+
+### Практическое занятие 22 - Балансировка нагрузки с Nginx и HAProxy
+
+- [x] Несколько серверов
+- [x] Настройка Nginx через `nginx.conf`
+- [x] Настройка HAProxy через `haproxy.cfg`
+- [x] Подготовка к развертыванию через Docker
+
+### Практическое занятие 23 - Контейнеризация с Docker
+
+- [x] `Dockerfile` с описанием сервера
+- [x] `compose-nginx.yaml` для балансировки с Nginx
+- [x] `compose-haproxy.yaml` для балансировки с HAProxy
+- [x] `docker compose` для развертывания
+
+Переход в директорию:
+
+```console
+$ cd docker
+```
+
+Запуск с Nginx:
+
+```console
+$ docker compose --file compose-nginx.yaml up --build
+```
+
+Запуск с HAProxy:
+
+```console
+$ docker compose --file compose-haproxy.yaml up --build
+```
 
 ## Технологии
 
-- HTML, CSS, JS
-- Service Worker API
-- Web App Manifest
-- WebSocket (Socket.IO)
-- Push API / Web Push
-- Express
-- Local Storage
-
-## Установка и запуск
-
-### Требования
-
-- Node.js
-- Git
-
-### Установка зависимостей
-
-```console
-$ cd notes-app
-$ npm install
-```
+- JS
+- PostgreSQL
+- MongoDB
+- Redis
+- Nginx
+- HAProxy
+- Docker

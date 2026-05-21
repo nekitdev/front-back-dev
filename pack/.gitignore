@@ -1,0 +1,12 @@
+# classic
+
+node_modules/
+
+# distributions
+
+dist/
+dist-ssr/
+
+# remove if lock file should be included
+
+package-lock.json
